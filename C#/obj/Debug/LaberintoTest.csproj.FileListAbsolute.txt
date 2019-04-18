@@ -23,3 +23,12 @@ C:\Users\Christian Ledgard\Downloads\Laberinto\Laberinto\C#\obj\Debug\LaberintoT
 C:\Users\Christian Ledgard\Downloads\Laberinto\Laberinto\C#\obj\Debug\LaberintoTest.Properties.Resources.resources
 C:\Users\Christian Ledgard\Downloads\Laberinto\Laberinto\C#\obj\Debug\LaberintoTest.csproj.GenerateResource.cache
 C:\Users\Christian Ledgard\Downloads\Laberinto\Laberinto\C#\obj\Debug\LaberintoTest.csproj.CoreCompileInputs.cache
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\bin\Debug\LaberintoTest.exe
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\bin\Debug\LaberintoTest.pdb
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.csprojAssemblyReference.cache
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.Form1.resources
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.Properties.Resources.resources
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.csproj.GenerateResource.cache
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.csproj.CoreCompileInputs.cache
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.exe
+C:\Users\Christian Ledgard\Documents\GitHub\Laberinto\C#\obj\Debug\LaberintoTest.pdb
