@@ -58,14 +58,20 @@ namespace LaberintoTest
         {
             listBox1.Items.Add(texto);
         }
+        private void printInTextBox2(string texto)
+        {
+            listBox2.Items.Add(texto);
+        }
+
 
         class Array {
+            private const int tablaLargo = 39;
+            private const int tablaAlto = 23;
+            private int[,] array = new int[tablaAlto, tablaLargo];
+            private int[] ubicacionActual = new int[] {19,0};
 
             public Array() {
-                int tablaLargo = 39;
-                int tablaAlto = 23;
-                int[,] array = new int[tablaAlto, tablaLargo];
-
+                //Inicializo el Array en 0's
                 for (int i = 0; i < tablaAlto; ++i)
                 {
                     for (int j = 0; j < tablaLargo; ++j)
@@ -74,7 +80,50 @@ namespace LaberintoTest
                     }
                 }
             }
-        
+            public void updateLocation(int x, int y)
+            {
+                ubicacionActual[0] = x;
+                ubicacionActual[1] = y;
+            }
+
+            public void abajoCP()
+            {
+                array[ubicacionActual[0], ubicacionActual[1] - 1] = 1;
+            }
+            public void arribaCP()
+            {
+                array[ubicacionActual[0], ubicacionActual[1] + 1] = 1;
+            }
+            public void derechaCP()
+            {
+                array[ubicacionActual[0] + 1, ubicacionActual[1]] = 1;
+            }
+            public void izquierdaCP()
+            {
+                array[ubicacionActual[0] - 1, ubicacionActual[1]] = 1;
+            }
+
+            public int getTablaLenX()
+            {
+                return tablaLargo;
+            }
+
+            public int getTablaLenY()
+            {
+                return tablaAlto;
+            }
+
+            public int getElement(int x, int y){
+                return array[x,y];
+            }
+
+            public string getElementString(int x, int y)
+            {
+                string resultado = array[x, y].ToString();
+                return resultado;
+            }
+
+
         };
 
         private void btnArriba_Click(object sender, EventArgs e)
@@ -127,14 +176,63 @@ namespace LaberintoTest
 
         private void Button2_Click(object sender, EventArgs e)
         {
+            Array arreglo = new Array();
 
-            Random r = new Random((int)DateTime.Now.Ticks);
-            int Direccion = r.Next(1, 4) * 2;
-            Direccion = 8;
+            for (int i = 0; i < 4 ;++i)
+            {
+                Random r = new Random((int)DateTime.Now.Ticks);
+                int dirActual = r.Next(1, 5) * 2;
 
-            printInTextBox(enviarDATOS(Direccion));
-            printInTextBox(Direccion.ToString());
+                string mensaje = enviarDATOS(dirActual);
 
+                printInTextBox2(mensaje);
+                printInTextBox2(dirActual.ToString());
+
+                textBox1.AppendText((string.Equals(mensaje,"Cp")).ToString());
+
+                if (dirActual == 2 && mensaje == "Cp")
+                {
+                    arreglo.abajoCP();
+                } // 2 = Abajo
+
+                if (dirActual == 4 && mensaje == "Cp") // 4 = Izquierda
+                    arreglo.izquierdaCP();
+
+                if (dirActual == 6 && mensaje == "Cp") // 6 = Derecha
+                    arreglo.derechaCP();
+
+                if (dirActual == 8 && mensaje == "Cp") // 8 = Arriba
+                    arreglo.arribaCP();
+                
+
+                printInTextBox(dirActual.ToString());
+            }
+
+            /*
+            listBox2.Items.Clear();
+            
+            string print = "";
+
+            for(int i = 0; i < arreglo.getTablaLenY(); ++i)
+            {
+                for(int j = 0; j < arreglo.getTablaLenX(); ++j)
+                {
+                    print += arreglo.getElementString(i, j); 
+                }
+                printInTextBox2(print);
+                print = "";
+            }
+             */
+
+        }
+
+        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
