@@ -184,31 +184,28 @@ namespace LaberintoTest
                 int dirActual = r.Next(1, 5) * 2;
 
                 string mensaje = enviarDATOS(dirActual);
+                string Cp = "Cp";
 
-                printInTextBox2(mensaje);
-                printInTextBox2(dirActual.ToString());
 
-                textBox1.AppendText((string.Equals(mensaje,"Cp")).ToString());
+                //textBox1.AppendText((mensaje.StartsWith(Cp)).ToString());
 
-                if (dirActual == 2 && mensaje == "Cp")
-                {
+                if (dirActual == 2 && mensaje.StartsWith(Cp))  // 2 = Abajo
                     arreglo.abajoCP();
-                } // 2 = Abajo
 
-                if (dirActual == 4 && mensaje == "Cp") // 4 = Izquierda
+                if (dirActual == 4 && mensaje.StartsWith(Cp)) // 4 = Izquierda
                     arreglo.izquierdaCP();
 
-                if (dirActual == 6 && mensaje == "Cp") // 6 = Derecha
+                if (dirActual == 6 && mensaje.StartsWith(Cp)) // 6 = Derecha
                     arreglo.derechaCP();
 
-                if (dirActual == 8 && mensaje == "Cp") // 8 = Arriba
+                if (dirActual == 8 && mensaje.StartsWith(Cp)) // 8 = Arriba
                     arreglo.arribaCP();
                 
-
                 printInTextBox(dirActual.ToString());
+                printInTextBox(mensaje);
             }
 
-            /*
+            
             listBox2.Items.Clear();
             
             string print = "";
@@ -217,12 +214,12 @@ namespace LaberintoTest
             {
                 for(int j = 0; j < arreglo.getTablaLenX(); ++j)
                 {
-                    print += arreglo.getElementString(i, j); 
+                    print += arreglo.getElementString(i, j); print += " ";
                 }
                 printInTextBox2(print);
                 print = "";
             }
-             */
+             
 
         }
 
