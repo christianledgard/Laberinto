@@ -9,6 +9,11 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 
+
+// 0: Camino no explorado
+// 1: Pared
+// 2: Camino libre explorado
+// 3: Rastro 
 namespace LaberintoTest
 {
     public partial class Form1 : Form
@@ -65,10 +70,10 @@ namespace LaberintoTest
 
 
         class Array {
-            private const int tablaLargo = 39;
+            private const int tablaLargo = 40;
             private const int tablaAlto = 23;
             private int[,] array = new int[tablaAlto, tablaLargo];
-            private int[] ubicacionActual = new int[] {19,0};
+            private int[] ubicacionActual = new int[] { 3, 1 };
 
             public Array() {
                 //Inicializo el Array en 0's
@@ -79,28 +84,48 @@ namespace LaberintoTest
                         array[i, j] = 0;
                     }
                 }
+
+                for (int i = 0; i < tablaLargo; i++)
+                {
+                    array[0, i] = 1;
+                    array[tablaAlto - 1, i] = 1;
+                }
+
+                for (int i = 0; i < tablaAlto; i++)
+                {
+                    array[i, 0] = 1;
+                    array[i, tablaLargo - 1] = 1;
+                    array[i, 1] = 1;
+                }
+
+                array[3, 1] = 0;
             }
             public void updateLocation(int x, int y)
             {
                 ubicacionActual[0] = x;
                 ubicacionActual[1] = y;
             }
-
+            
             public void abajoCP()
-            {
-                array[ubicacionActual[0], ubicacionActual[1] - 1] = 1;
-            }
-            public void arribaCP()
-            {
-                array[ubicacionActual[0], ubicacionActual[1] + 1] = 1;
-            }
-            public void derechaCP()
             {
                 array[ubicacionActual[0] + 1, ubicacionActual[1]] = 1;
             }
-            public void izquierdaCP()
+            public void arribaCP()
             {
                 array[ubicacionActual[0] - 1, ubicacionActual[1]] = 1;
+            }
+            public void derechaCP()
+            {
+                array[ubicacionActual[0], ubicacionActual[1] + 1] = 1;
+            }
+            public void izquierdaCP()
+            {
+                array[ubicacionActual[0], ubicacionActual[1] - 1] = 1;
+            }
+
+            public void marcarUbicacionActual()
+            {
+                array[ubicacionActual[0], ubicacionActual[1]] = 2;
             }
 
             public int getTablaLenX()
@@ -113,14 +138,19 @@ namespace LaberintoTest
                 return tablaAlto;
             }
 
-            public int getElement(int x, int y){
-                return array[x,y];
+            public int getElement(int x, int y) {
+                return array[x, y];
             }
 
             public string getElementString(int x, int y)
             {
                 string resultado = array[x, y].ToString();
                 return resultado;
+            }
+
+            public int[] getUbicacionActual()
+            {
+                return ubicacionActual;
             }
 
 
@@ -178,37 +208,60 @@ namespace LaberintoTest
         {
             Array arreglo = new Array();
 
-            for (int i = 0; i < 4 ;++i)
+            for (int i = 0; i < 1000 ;++i)
             {
                 Random r = new Random((int)DateTime.Now.Ticks);
                 int dirActual = r.Next(1, 5) * 2;
 
+                int[] ubicacionActual = arreglo.getUbicacionActual();
+
                 string mensaje = enviarDATOS(dirActual);
-
-                printInTextBox2(mensaje);
-                printInTextBox2(dirActual.ToString());
-
-                textBox1.AppendText((string.Equals(mensaje,"Cp")).ToString());
-
-                if (dirActual == 2 && mensaje == "Cp")
+                string Cp = "Cp";
+                string De = "De";
+                string Iz = "Iz";
+                string Ab = "Ab";
+                string Ar = "Ar";
+            
+                if (dirActual == 2 && mensaje.StartsWith(Ab))
                 {
-                    arreglo.abajoCP();
-                } // 2 = Abajo
+                    arreglo.updateLocation(ubicacionActual[0] + 1, ubicacionActual[1]);
+                }
 
-                if (dirActual == 4 && mensaje == "Cp") // 4 = Izquierda
+                if (dirActual == 4 && mensaje.StartsWith(Iz))
+                {
+                    arreglo.updateLocation(ubicacionActual[0], ubicacionActual[1] - 1);
+                }
+
+                if (dirActual == 6 && mensaje.StartsWith(De))
+                {
+                    arreglo.updateLocation(ubicacionActual[0], ubicacionActual[1] + 1);
+                }
+
+                if (dirActual == 8 && mensaje.StartsWith(Ar))
+                {
+                    arreglo.updateLocation(ubicacionActual[0] - 1, ubicacionActual[1]);
+                }
+
+                //textBox1.AppendText((mensaje.StartsWith(Cp)).ToString());
+
+                if (dirActual == 2 && mensaje.StartsWith(Cp))  // 2 = Abajo
+                    arreglo.abajoCP();
+
+                if (dirActual == 4 && mensaje.StartsWith(Cp)) // 4 = Izquierda
                     arreglo.izquierdaCP();
 
-                if (dirActual == 6 && mensaje == "Cp") // 6 = Derecha
+                if (dirActual == 6 && mensaje.StartsWith(Cp)) // 6 = Derecha
                     arreglo.derechaCP();
 
-                if (dirActual == 8 && mensaje == "Cp") // 8 = Arriba
+                if (dirActual == 8 && mensaje.StartsWith(Cp)) // 8 = Arriba
                     arreglo.arribaCP();
-                
 
                 printInTextBox(dirActual.ToString());
+                printInTextBox(mensaje);
             }
 
-            /*
+            arreglo.marcarUbicacionActual();
+
             listBox2.Items.Clear();
             
             string print = "";
@@ -217,12 +270,12 @@ namespace LaberintoTest
             {
                 for(int j = 0; j < arreglo.getTablaLenX(); ++j)
                 {
-                    print += arreglo.getElementString(i, j); 
+                    print += arreglo.getElementString(i, j); print += " ";
                 }
                 printInTextBox2(print);
                 print = "";
             }
-             */
+             
 
         }
 
