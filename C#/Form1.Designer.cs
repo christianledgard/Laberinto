@@ -91,7 +91,7 @@
             this.btnAbajo.Tag = "2";
             this.btnAbajo.Text = "Abajo";
             this.btnAbajo.UseVisualStyleBackColor = true;
-            this.btnAbajo.Click += new System.EventHandler(this.btnArriba_Click);
+            this.btnAbajo.Click += new System.EventHandler(this.BtnArriba_Click);
             // 
             // btnIzquierda
             // 
@@ -103,7 +103,7 @@
             this.btnIzquierda.Tag = "4";
             this.btnIzquierda.Text = "Izquierda";
             this.btnIzquierda.UseVisualStyleBackColor = true;
-            this.btnIzquierda.Click += new System.EventHandler(this.btnArriba_Click);
+            this.btnIzquierda.Click += new System.EventHandler(this.BtnArriba_Click);
             // 
             // btnDerecha
             // 
@@ -115,7 +115,7 @@
             this.btnDerecha.Tag = "6";
             this.btnDerecha.Text = "Derecha";
             this.btnDerecha.UseVisualStyleBackColor = true;
-            this.btnDerecha.Click += new System.EventHandler(this.btnArriba_Click);
+            this.btnDerecha.Click += new System.EventHandler(this.BtnArriba_Click);
             // 
             // listBox1
             // 
@@ -138,7 +138,7 @@
             this.btnArriba.Tag = "8";
             this.btnArriba.Text = "Arriba";
             this.btnArriba.UseVisualStyleBackColor = true;
-            this.btnArriba.Click += new System.EventHandler(this.btnArriba_Click);
+            this.btnArriba.Click += new System.EventHandler(this.BtnArriba_Click);
             // 
             // label2
             // 
