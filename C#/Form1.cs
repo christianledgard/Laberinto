@@ -11,9 +11,6 @@ using System.Net.Sockets;
 using System.Collections;
 
 
-// 0: Camino no explorado
-// 1: Pared
-// 2: Posicion Actual
 namespace LaberintoTest
 {
     public partial class Form1 : Form
@@ -24,9 +21,9 @@ namespace LaberintoTest
             cbRaton.SelectedIndex = 0;
         }
 
-        //enviarDATOS envia los datos para ejecutar el juego
-        // enviarDATOS(x), si x=2 ABAJO, si x=4 IZQ, si x=6 DER, si x=8 ARRIBA.
-        private string enviarDATOS(int Direccion) {
+        //EnviarDATOS envia los datos para ejecutar el juego
+        //EnviarDATOS(x), si x=2 ABAJO, si x=4 IZQ, si x=6 DER, si x=8 ARRIBA.
+        private string EnviarDATOS(int Direccion) {
             string request = cbRaton.Text + Direccion.ToString() + "\r\n";
             Byte[] bytesSent = Encoding.ASCII.GetBytes(request);
             Byte[] bytesReceived = new Byte[256];
@@ -59,11 +56,11 @@ namespace LaberintoTest
         }
 
         //printInTextBox imprime un string en el recuadro.
-        private void printInTextBox(string texto)
+        private void PrintInTextBox(string texto)
         {
             listBox1.Items.Add(texto);
         }
-        private void printInTextBox2(string texto)
+        private void PrintInTextBox2(string texto)
         {
             listBox2.Items.Add(texto);
         }
@@ -100,22 +97,22 @@ namespace LaberintoTest
 
                 array[3, 1] = 0;
             }
-            public void updateLocation(int x, int y)
+            public void UpdateLocation(int x, int y)
             {
                 ubicacionActual[0] = x;
                 ubicacionActual[1] = y;
             }
 
-            public void updateLocationPro(int direccion)
+            public void UpdateLocation(int direccion)
             {
                 if (direccion == 2)
-                    updateLocation(ubicacionActual[0] + 1, ubicacionActual[1]);
+                    UpdateLocation(ubicacionActual[0] + 1, ubicacionActual[1]);
                 else if (direccion == 4)
-                    updateLocation(ubicacionActual[0], ubicacionActual[1] - 1);
+                    UpdateLocation(ubicacionActual[0], ubicacionActual[1] - 1);
                 else if (direccion == 6)
-                    updateLocation(ubicacionActual[0], ubicacionActual[1] + 1);
+                    UpdateLocation(ubicacionActual[0], ubicacionActual[1] + 1);
                 else if (direccion == 8)
-                    updateLocation(ubicacionActual[0] -1 , ubicacionActual[1]);
+                    UpdateLocation(ubicacionActual[0] -1 , ubicacionActual[1]);
 
             }
 
@@ -131,27 +128,26 @@ namespace LaberintoTest
                     array[ubicacionActual[0] - 1, ubicacionActual[1]] = numero;
 
             }
-            
 
             public bool Exist(int ubicacion, int valorABuscar)
             {
                 if (ubicacion == 2)
-                    if (getElement(ubicacionActual[0] + 1, ubicacionActual[1]) == valorABuscar)
+                    if (GetElement(ubicacionActual[0] + 1, ubicacionActual[1]) == valorABuscar)
                         return true;
                     else
                         return false;
                 else if (ubicacion == 4)
-                    if (getElement(ubicacionActual[0], ubicacionActual[1] - 1) == valorABuscar)
+                    if (GetElement(ubicacionActual[0], ubicacionActual[1] - 1) == valorABuscar)
                         return true;
                     else
                         return false;
                 else if (ubicacion == 6)
-                    if (getElement(ubicacionActual[0], ubicacionActual[1] + 1) == valorABuscar)
+                    if (GetElement(ubicacionActual[0], ubicacionActual[1] + 1) == valorABuscar)
                         return true;
                     else
                         return false;
                 else if (ubicacion == 8)
-                    if (getElement(ubicacionActual[0] - 1, ubicacionActual[1]) == valorABuscar)
+                    if (GetElement(ubicacionActual[0] - 1, ubicacionActual[1]) == valorABuscar)
                         return true;
                     else
                         return false;
@@ -160,26 +156,26 @@ namespace LaberintoTest
 
             }
 
-            public void marcarUbicacionActual()
+            public void MarcarUbicacionActual()
             {
                 array[ubicacionActual[0], ubicacionActual[1]] = 2;
             }
 
-            public int getTablaLenX()
+            public int GetTablaLenX()
             {
                 return tablaLargo;
             }
 
-            public int getTablaLenY()
+            public int GetTablaLenY()
             {
                 return tablaAlto;
             }
 
-            public int getElement(int x, int y) {
+            public int GetElement(int x, int y) {
                 return array[x, y];
             }
 
-            public string getElementString(int x, int y)
+            public string GetElementString(int x, int y)
             {
                 string resultado = array[x, y].ToString();
                 return resultado;
@@ -188,7 +184,7 @@ namespace LaberintoTest
 
         };
 
-        private void btnArriba_Click(object sender, EventArgs e)
+        private void BtnArriba_Click(object sender, EventArgs e)
         {
             string request = cbRaton.Text + ((Button)sender).Tag.ToString() + "\r\n";
             Byte[] bytesSent = Encoding.ASCII.GetBytes(request);
@@ -227,7 +223,7 @@ namespace LaberintoTest
             {
                 Random r = new Random((int)DateTime.Now.Ticks);
                 int Direccion = r.Next(1, 4) * 2;
-                printInTextBox(enviarDATOS(Direccion));
+                PrintInTextBox(EnviarDATOS(Direccion));
             }
         }
 
@@ -239,86 +235,104 @@ namespace LaberintoTest
         private void Button2_Click(object sender, EventArgs e)
         {
             string Cp = "Cp", De = "De", Iz = "Iz", Ab = "Ab", Ar = "Ar", Cc = "Cc";
-
+            
             Array arreglo = new Array();
+            // Creo un Array con el Laberinto.
+            // 0: Camino no explorado
+            // 1: Pared
+            // 2: Posicion Actual
+
             ArrayList movimientosRetorno = new ArrayList();
-            int choclosComidos = 0;
+            // Creo una lista para almacenar los movimientos y poder retornar al home una vez que recoja un choclo.
+
             int dirActual;
             Random r = new Random((int)DateTime.Now.Ticks);
 
-
-            for (int i = 0; i < 15000; ++i)
+            for (int choclosRestantes = 68;;)
             {
-
                 dirActual = r.Next(1, 5) * 2;
-
+                //Creo un valor aleatorio que puede tomar 2 ABAJO, 4 IZQ, 6 DER y 8 ARRIBA.
 
                 if (!arreglo.Exist(dirActual, 1))
+                    //Verifica si existe una pared previamente detectada en el array. Si hay pared, busca otro numero random.
                 {
-
-                    string mensaje = enviarDATOS(dirActual);
+                    string mensaje = EnviarDATOS(dirActual);
+                    // Envio la direccion y asigno el mensaje que retorna el servidor a un string.
 
                     if (mensaje.StartsWith(Cc))
+                        //Si come el choclo, retorna a home.
                     {
-                        movimientosRetorno.Reverse();
-                        foreach (int j in movimientosRetorno)
-                        {
-                            enviarDATOS(j);
-                            arreglo.updateLocationPro(j);
-                        }
-                        movimientosRetorno.Clear();
-                        choclosComidos++;
-                        if (choclosComidos == 20)
-                            break;
-
+                        choclosRestantes--;
+                        RetornarAHome(arreglo, movimientosRetorno);
                     }
                     else
+                        //Si no come el choclo...
                     {
                         if (mensaje.StartsWith(Ab) || mensaje.StartsWith(Iz) || mensaje.StartsWith(De) || mensaje.StartsWith(Ar))
-                            arreglo.updateLocationPro(dirActual);
+                            arreglo.UpdateLocation(dirActual);
+                        // actualizo la direccion de a donde se movio al array.
 
-                        if (dirActual == 2 && mensaje.StartsWith(Ab))
-                            movimientosRetorno.Add(8);
-
-                        if (dirActual == 4 && mensaje.StartsWith(Iz))
-                            movimientosRetorno.Add(6);
-
-                        if (dirActual == 6 && mensaje.StartsWith(De))
-                            movimientosRetorno.Add(4);
-
-                        if (dirActual == 8 && mensaje.StartsWith(Ar))
-                            movimientosRetorno.Add(2);
+                        AgregarMovimientosDeRetorno(De, Iz, Ab, Ar, movimientosRetorno, dirActual, mensaje);
+                        //Agrego los movimientos para realiar el retorno.
 
                         if (mensaje.StartsWith(Cp))
-                            arreglo.Obstaculo(dirActual,1);
+                            arreglo.Obstaculo(dirActual, 1);
+                        //En caso que choque con la pared, registro la pared en el array.
                     }
-
-                    printInTextBox(dirActual.ToString());
-                    printInTextBox(mensaje);
+                    PrintInTextBox(mensaje + " -> " + dirActual.ToString());
+                    //Imprimo la direccion en el cuadro de texto.
                 }
 
-
+                if (choclosRestantes == 0)
+                    break;
             }
 
             ImprimirArreglo(arreglo);
+            //Al comer todos los choclos, imprimo el array final que fue utilizado como el mapa del laberinto.
 
+        }
+
+        private static void AgregarMovimientosDeRetorno(string De, string Iz, string Ab, string Ar, ArrayList movimientosRetorno, int dirActual, string mensaje)
+        {
+            if (dirActual == 2 && mensaje.StartsWith(Ab))
+                movimientosRetorno.Add(8);
+
+            if (dirActual == 4 && mensaje.StartsWith(Iz))
+                movimientosRetorno.Add(6);
+
+            if (dirActual == 6 && mensaje.StartsWith(De))
+                movimientosRetorno.Add(4);
+
+            if (dirActual == 8 && mensaje.StartsWith(Ar))
+                movimientosRetorno.Add(2);
+        }
+
+        private void RetornarAHome(Array arreglo, ArrayList movimientosRetorno)
+        {
+            movimientosRetorno.Reverse();
+            foreach (int j in movimientosRetorno)
+            {
+                EnviarDATOS(j);
+                arreglo.UpdateLocation(j);
+            }
+            movimientosRetorno.Clear();
         }
 
         private void ImprimirArreglo(Array arreglo)
         {
-            arreglo.marcarUbicacionActual();
+            arreglo.MarcarUbicacionActual();
 
             listBox2.Items.Clear();
 
             string print = "";
 
-            for (int i = 0; i < arreglo.getTablaLenY(); ++i)
+            for (int i = 0; i < arreglo.GetTablaLenY(); ++i)
             {
-                for (int j = 0; j < arreglo.getTablaLenX(); ++j)
+                for (int j = 0; j < arreglo.GetTablaLenX(); ++j)
                 {
-                    print += arreglo.getElementString(i, j); print += " ";
+                    print += arreglo.GetElementString(i, j); print += " ";
                 }
-                printInTextBox2(print);
+                PrintInTextBox2(print);
                 print = "";
             }
         }
